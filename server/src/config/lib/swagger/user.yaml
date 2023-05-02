@@ -1,0 +1,513 @@
+paths:
+    /users/login:
+        post:
+            tags:
+                - User
+            summary: User login
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                email:
+                                    type: string
+                                    description: The email address of the user.
+                                    example: john.doe@example.com
+                                password:
+                                    type: string
+                                    description: The password of the user.
+                                    example: myPassword123
+                            required:
+                                - email
+                                - password
+            responses:
+                "200":
+                    description: Successfully loggedIn the user
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    id:
+                                        type: string
+                                    profile_id:
+                                        type: string
+                                    firstName:
+                                        type: string
+                                    lastName:
+                                        type: string
+                                    email:
+                                        type: string
+                                    created_at:
+                                        type: string
+                                    updated_at:
+                                        type: string
+                "401":
+                    description: Invalid email or password.
+                "500":
+                    description: Internal server error.
+
+    # /users:
+    #     post:
+    #         tags:
+    #             - User
+    #         summary: User Create
+    #         requestBody:
+    #             required: true
+    #             content:
+    #                 application/json:
+    #                     schema:
+    #                         type: object
+    #                         properties:
+    #                             firstName:
+    #                                 type: string
+    #                                 description: First name of the user.
+    #                                 example: john
+    #                             lastName:
+    #                                 type: string
+    #                                 description: Last name of the user.
+    #                                 example: caprio
+    #                             profile_id:
+    #                                 type: string
+    #                                 description: Profile id of the user.
+    #                                 example: 123457741
+    #                             email:
+    #                                 type: string
+    #                                 description: The email address of the user.
+    #                                 example: admin@mail.com
+    #                             password:
+    #                                 type: string
+    #                                 description: The password of the user.
+    #                                 example: myPassword123
+    #                             confirmPassword:
+    #                                 type: string
+    #                                 description: Retype password of the user.
+    #                                 example: myPassword123
+    #                         required:
+    #                             - firstName
+    #                             - lastName
+    #                             - profile_id
+    #                             - email
+    #                             - password
+    #         responses:
+    #             "200":
+    #                 description: Successfully created the user
+    #                 content:
+    #                     application/json:
+    #                         schema:
+    #                             type: array
+    #                             items:
+    #                                 type: object
+    #                                 properties:
+    #                                     id:
+    #                                         type: string
+    #                                     profile_id:
+    #                                         type: string
+    #                                     firstName:
+    #                                         type: string
+    #                                     lastName:
+    #                                         type: string
+    #                                     email:
+    #                                         type: string
+    #                                     created_at:
+    #                                         type: string
+    #                                     updated_at:
+    #                                         type: string
+    #             "400":
+    #                 description: Already registered.
+    #             "500":
+    #                 description: Internal server error.
+
+    #     get:
+    #         tags:
+    #             - User
+    #         summary: User list
+    #         responses:
+    #             "200":
+    #                 description: Successfully show the users
+    #                 content:
+    #                     application/json:
+    #                         schema:
+    #                             type: array
+    #                             items:
+    #                                 type: object
+    #                                 properties:
+    #                                     id:
+    #                                         type: string
+    #                                     profile_id:
+    #                                         type: string
+    #                                     firstName:
+    #                                         type: string
+    #                                     lastName:
+    #                                         type: string
+    #                                     email:
+    #                                         type: string
+    #                                     created_at:
+    #                                         type: string
+    #                                     updated_at:
+    #                                         type: string
+    #             "401":
+    #                 description: Unathenticate User.
+    #             "500":
+    #                 description: Internal server error.
+
+    #     patch:
+    #         tags:
+    #             - User
+    #         summary: User update
+    #         requestBody:
+    #             required: true
+    #             content:
+    #                 application/json:
+    #                     schema:
+    #                         type: object
+    #                         properties:
+    #                             firstName:
+    #                                 type: string
+    #                                 description: First name of the user.
+    #                                 example: john
+    #                             lastName:
+    #                                 type: string
+    #                                 description: Last name of the user.
+    #                                 example: caprio
+    #         responses:
+    #             "200":
+    #                 description: Successfully updated the user
+    #                 content:
+    #                     application/json:
+    #                         schema:
+    #                             type: array
+    #                             items:
+    #                                 type: object
+    #                                 properties:
+    #                                     id:
+    #                                         type: string
+    #                                     profile_id:
+    #                                         type: string
+    #                                     firstName:
+    #                                         type: string
+    #                                     lastName:
+    #                                         type: string
+    #                                     email:
+    #                                         type: string
+    #                                     created_at:
+    #                                         type: string
+    #                                     updated_at:
+    #                                         type: string
+    #             "404":
+    #                 description: User not found.
+    #             "500":
+    #                 description: Internal server error.
+    /users:
+        post:
+            tags:
+                - User
+            summary: Create a new user
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                firstName:
+                                    type: string
+                                    description: The user's first name.
+                                    example: John
+                                lastName:
+                                    type: string
+                                    description: The user's last name.
+                                    example: Caprio
+                                username:
+                                    type: string
+                                    description: The user's username.
+                                    example: x32
+                                email:
+                                    type: string
+                                    description: The user's email address.
+                                    example: john.caprio@example.com
+                                password:
+                                    type: string
+                                    description: The user's password.
+                                    example: myPassword123
+                                confirmPassword:
+                                    type: string
+                                    description: The user's confirmed password.
+                                    example: myPassword123
+                            required:
+                                - firstName
+                                - lastName
+                                - profileId
+                                - email
+                                - password
+                                - confirmPassword
+            responses:
+                "201":
+                    description: The user was created successfully.
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    id:
+                                        type: string
+                                        description: The ID of the newly created user.
+                                        example: 1234abcd-5678-efgh-9012-ijklmnopqrst
+                                    firstName:
+                                        type: string
+                                        description: The user's first name.
+                                        example: John
+                                    lastName:
+                                        type: string
+                                        description: The user's last name.
+                                        example: Caprio
+                                    username:
+                                        type: string
+                                        description: The username.
+                                        example: d32
+                                    email:
+                                        type: string
+                                        description: The user's email address.
+                                        example: john.caprio@example.com
+                                    createdAt:
+                                        type: string
+                                        format: date-time
+                                        description: The date and time when the user was created.
+                                        example: "2023-05-02T15:30:00Z"
+                                    updatedAt:
+                                        type: string
+                                        format: date-time
+                                        description: The date and time when the user was last updated.
+                                        example: "2023-05-02T15:30:00Z"
+                "400":
+                    description: A user with the same email address already exists.
+                "500":
+                    description: An internal server error occurred.
+
+        get:
+            tags:
+                - User
+            summary: User list
+            responses:
+                "200":
+                    description: Successfully show the users
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: object
+                                    properties:
+                                        id:
+                                            type: string
+                                        firstName:
+                                            type: string
+                                        lastName:
+                                            type: string
+                                        email:
+                                            type: string
+                                        created_at:
+                                            type: string
+                                        updated_at:
+                                            type: string
+                "401":
+                    description: Unathenticate User.
+                "500":
+                    description: Internal server error.
+
+        patch:
+            tags:
+                - User
+            summary: User update
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                firstName:
+                                    type: string
+                                    description: First name of the user.
+                                    example: john
+                                lastName:
+                                    type: string
+                                    description: Last name of the user.
+                                    example: caprio
+            responses:
+                "200":
+                    description: Successfully updated the user
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: object
+                                    properties:
+                                        id:
+                                            type: string
+                                        profile_id:
+                                            type: string
+                                        firstName:
+                                            type: string
+                                        lastName:
+                                            type: string
+                                        email:
+                                            type: string
+                                        created_at:
+                                            type: string
+                                        updated_at:
+                                            type: string
+                "404":
+                    description: User not found.
+                "500":
+                    description: Internal server error.
+
+    /users/logout:
+        post:
+            tags:
+                - User
+            summary: User Logout
+            description: Logout the authenticated user and clear the authentication token cookie.
+            responses:
+                "200":
+                    description: Successfully logged out the user.
+                "401":
+                    description: Unauthorized. The user is not authenticated.
+                "500":
+                    description: Internal server error.
+
+        # /users/{id}:
+        #     delete:
+        #         tags:
+        #             - User
+        #         summary: Delete user
+        #         parameters:
+        #             - in: path
+        #               name: id
+        #               description: ID of the user to be deleted.
+        #               required: true
+        #               schema:
+        #                   type: string
+        #                   example: 123
+        #         responses:
+        #             "200":
+        #                 description: User deleted successfully
+        #                 content:
+        #                     application/json:
+        #                         schema:
+        #                             type: object
+        #                             properties:
+        #                                 id:
+        #                                     type: string
+        #                                 profile_id:
+        #                                     type: string
+        #                                 firstName:
+        #                                     type: string
+        #                                 lastName:
+        #                                     type: string
+        #                                 email:
+        #                                     type: string
+        #                                 created_at:
+        #                                     type: string
+        #                                 updated_at:
+        #                                     type: string
+        #             "404":
+        #                 description: User not found.
+        #             "500":
+        #                 description: Internal server error.
+        #     components:
+        #         schemas:
+        #             User:
+        #                 type: object
+        #                 properties:
+        #                     id:
+        #                         type: string
+        #                         description: ID of the deleted user.
+        #                         example: 123
+        #                     firstName:
+        #                         type: string
+        #                         description: First name of the deleted user.
+        #                         example: John
+        #                     profile_id:
+        #                         type: string
+        #                         description: Profile id of the user.
+        #                         example: 123457741
+        #                     lastName:
+        #                         type: string
+        #                         description: Last name of the deleted user.
+        #                         example: Doe
+        #                     email:
+        #                         type: string
+        #                         description: Email address of the deleted user.
+        #                         example: john.doe@example.com
+        #                     created_at:
+        #                         type: string
+        #                         description: Timestamp of when the user was created.
+        #                         example: "2023-04-12T12:34:56Z"
+        #                     updated_at:
+        #                         type: string
+        #                         description: Timestamp of when the user was last updated.
+        #                         example: "2023-04-12T12:34:56Z"
+
+        #     get:
+        #         tags:
+        #             - User
+        #         summary: get a user
+        #         parameters:
+        #             - in: path
+        #               name: id
+        #               description: ID of the user to be get.
+        #               required: true
+        #               schema:
+        #                   type: string
+        #                   example: 123
+        #         responses:
+        #             "200":
+        #                 description: User get successfully
+        #                 content:
+        #                     application/json:
+        #                         schema:
+        #                             type: object
+        #                             properties:
+        #                                 id:
+        #                                     type: string
+        #                                 profile_id:
+        #                                     type: string
+        #                                 firstName:
+        #                                     type: string
+        #                                 lastName:
+        #                                     type: string
+        #                                 email:
+        #                                     type: string
+        #                                 created_at:
+        #                                     type: string
+        #                                 updated_at:
+        #                                     type: string
+        #             "404":
+        #                 description: User not found.
+        #             "500":
+        #                 description: Internal server error.
+
+        # /users/profile-photo-upload:
+        patch:
+            tags:
+                - User
+            summary: User profile photo upload
+            requestBody:
+                content:
+                    multipart/form-data:
+                        schema:
+                            type: object
+                        fileName:
+                            type: string
+                            format: binary
+            responses:
+                "200":
+                    description: User avatar uploaded successfully
+                "400":
+                    description: Invalid input provided
+                "500":
+                    description: Internal server error
