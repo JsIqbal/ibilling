@@ -77,6 +77,48 @@ const register = async (req, res, next) => {
 //         res.status(500).send({ message: "Internal Server Error" });
 //     }
 // };
+// const login = async (req, res) => {
+//     try {
+//         const { email, password } = req.body;
+
+//         const user = await User.findOne({
+//             where: {
+//                 email,
+//             },
+//         });
+
+//         if (!user || !user.password || !user.validPassword(password)) {
+//             return res.status(400).send({ message: "Invalid Credentials" });
+//         }
+
+//         if (!user) {
+//             return res.status(400).send("Invalid credentials.");
+//         }
+
+//         // res.cookie("access_token", generateAccessToken(user), {
+//         //     // httpOnly: true,
+//         //     // signed: true,
+//         // });
+
+//         res.cookie(
+//             "access_token",
+//             generateAccessToken(user),
+//             {
+//                 httpOnly: true,
+//                 signed: true,
+//                 secure: false, // set secure option to false
+//             },
+//             { path: "/" }
+//         );
+
+//         res.status(200).send(user);
+//     } catch (error) {
+//         console.log(error);
+
+//         res.status(500).send("Internal server error.");
+//     }
+// };
+
 const login = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -90,15 +132,15 @@ const login = async (req, res) => {
         if (!user || !user.password || !user.validPassword(password)) {
             return res.status(400).send({ message: "Invalid Credentials" });
         }
-        console.log(user);
 
         if (!user) {
             return res.status(400).send("Invalid credentials.");
         }
 
         res.cookie("access_token", generateAccessToken(user), {
-            httpOnly: true,
+            httpOnly: false,
             signed: true,
+            secure: false, // set secure option to false
         });
 
         res.status(200).send(user);
@@ -111,7 +153,6 @@ const login = async (req, res) => {
 
 async function logout(req, res) {
     try {
-        // Clear the authentication token cookie
         res.clearCookie("access_token");
 
         res.status(200).send("Logout successful");
@@ -133,7 +174,39 @@ async function getUsers(req, res) {
     }
 }
 
+async function updateUser(req, res) {
+    try {
+        const { firstName, lastName } = req.body;
+        const email = req.user.email;
+
+        const user = await User.findOne({
+            where: { email },
+        });
+
+        if (!user) return res.status(404).send("User not found");
+
+        await User.update(
+            {
+                firstName,
+                lastName,
+            },
+            { where: { email } }
+        );
+
+        const updatedUser = await User.findOne({
+            where: { email },
+            attributes: { exclude: ["password"] },
+        });
+
+        res.status(200).send(updatedUser);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send("Internal server error");
+    }
+}
+
 module.exports.login = login;
 module.exports.register = register;
 module.exports.getUsers = getUsers;
 module.exports.logout = logout;
+module.exports.updateUser = updateUser;

@@ -23,4 +23,16 @@ const registerSchema = object().shape({
         ),
 });
 
+const updateUserSchema = object().shape({
+    firstName: string()
+        .min(2, "First name must be at least two charecters long.")
+        .max(30, "First Name must be at most 30 charecters long.")
+        .required("First Name must be required"),
+    lastName: string()
+        .min(2, "Last name must be at least two charecters long.")
+        .max(30, "Last Name must be at most 30 charecters long.")
+        .required("Last Name must be required"),
+});
+
 module.exports.registerSchema = registerSchema;
+module.exports.updateUserSchema = updateUserSchema;

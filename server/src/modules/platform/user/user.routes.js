@@ -1,12 +1,19 @@
-const { login, register, getUsers, logout } = require("./user.controller");
+const {
+    login,
+    register,
+    getUsers,
+    logout,
+    updateUser,
+} = require("./user.controller");
 const validate = require("../../core/middlewares/validate");
-const { registerSchema } = require("./user.schema");
+const { registerSchema, updateUserSchema } = require("./user.schema");
 const AuthStrategy = require("./user.authenticate.middleware");
 
 module.exports = (app) => {
     app.route("/users")
         .get(AuthStrategy, getUsers)
-        .post(validate(registerSchema), register);
+        .post(AuthStrategy, validate(registerSchema), register)
+        .patch(AuthStrategy, validate(updateUserSchema), updateUser);
     app.post("/users/login", login);
     app.post("/users/logout", AuthStrategy, logout);
 };

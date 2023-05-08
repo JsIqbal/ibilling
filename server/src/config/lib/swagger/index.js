@@ -4,8 +4,8 @@ const options = {
     definition: {
         openapi: "3.0.0",
         info: {
-            title: "Ecommerce",
-            description: "Ecommerce API Documentation",
+            title: "Billing",
+            description: "Billing API Documentation",
             version: "1.0.0",
         },
         components: {

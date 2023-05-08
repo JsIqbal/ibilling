@@ -18,6 +18,7 @@ module.exports = () => {
         },
     };
     app.use(cors(corsOptions));
+
     app.set("port", process.env.PORT);
 
     app.use(bodyParser.json());
